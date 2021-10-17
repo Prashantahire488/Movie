@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        
+        .mSearch > input{
+            height: 30px;
+            width: 500px;
+            margin-top: 30px;
+            margin-left: 650px;
+            border-radius: 10px;
+        }
+        button{
+            height: 35px;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+        }
+        .mdiv{
+            background-color: #002c85;
+            color: rgb(255, 255, 255);
+            height: 100px;
+        }
+       
+        img{
+            height: 500px;
+            width: 500px;
+        }
+       #movies,#posters{
+           margin-left: 400px;
+           background-color: black;
+           color: yellow;
+           border: cyan;
+           border-radius: 5px;
+       }
+    </style>
+</head>
+<body>
+    <div class="mdiv">
+        <div class="mSearch">
+            <input type="text" id="movie" placeholder="Enter Movie Name" required>
+        <button onclick="moviesdata()">Search Movie</button>
+        </div>
+
+    </div>
+    <hr>
+    <div class="maindiv">
+            
+        <div id="movies">
+            
+        </div>
+        <div id="posters">
+
+        </div>
+
+    </div>
+
+    <script>
+       
+        async function moviesdata(){
+        let moviename=document.getElementById("movie").value;
+        let res= await fetch(`http://www.omdbapi.com/?t=${moviename}&type=movie&apikey=ecd0ec44`);
+    
+        let data=await res.json();
+        showmovie(data);
+        console.log(data);
+    }
+
+
+        let parent=document.getElementById("posters");
+
+        let parent1=document.getElementById("movies");
+
+   function showmovie(data){
+       movie.innerHTML="";
+       movies.innerHTML="";
+       posters.innerHTML="";
+       
+    if(data.Error){
+        let img=document.createElement("img");
+        img.src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_f4LrylSwmaJSbZ8vtw4HDcka1v296UYviA&usqp=CAU";
+
+        //p.textContent="Movie Not Found"
+        parent.append(img,data.Error)
+    }
+    else{
+
+        let img=document.createElement("img");
+        img.src=data.Poster;
+
+        let mname=document.createElement("p");
+
+        let mlang=document.createElement("p");
+
+        let myear=document.createElement("p");
+
+        let mactor=document.createElement("p");
+
+        let maward=document.createElement("p");
+
+        let Rdate=document.createElement("p");
+
+        let Rating=document.createElement("p");
+
+
+        img.append("img"+data.Poster);
+        mname.append("Name : "+ data.Title);
+        mlang.append("language : "+data.Language);
+        myear.append("Released Year : "+data.Year);
+        mactor.append("Actors In Movies : "+data.Actors);
+        maward.append("Awards : "+data.Awards);
+        Rdate.append("Released Date : "+data.Released);
+        Rating.append("Rating : "+data.imdbRating);
+
+        if(data.imdbRating>8.5)
+        {
+            let p =document.createElement("p");
+            p.textContent="Recommended";
+            p.style.backgroundColor="red";
+            p.style.fontSize="30px";
+          
+            parent.append(p);
+
+        }
+
+       
+            parent.append(mname,mlang,myear,mactor,maward,Rdate,Rating);
+            parent1.append(img);
+       
+          }
+        }
+    </script>
+</body>
+</html>
